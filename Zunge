@@ -35,10 +35,10 @@ while z == 0:
 		plt.ylabel('Current (A)')
 		plot(x, y, 'bo')
 		plot(x, predict_y, 'k-')
-		savefig('/DATA/PLOT.jpeg')
+		savefig('PLOT.jpeg')
 		plt.draw()
-		np.savetxt('/DATA/POINTS', y, fmt = "%3f", newline='\n')
-		f = open ('/DATA/LINREG', 'w')
+		np.savetxt('POINTS', y, fmt = "%3f", newline='\n')
+		f = open ('LINREG', 'w')
 		# CONVERT VALUES INTO STRINGS
 		slope = ("%2f" % slope)
 		intercept = ("%2f" % intercept)
