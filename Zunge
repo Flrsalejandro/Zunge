@@ -1,0 +1,68 @@
+# IMPORT MODULES
+import sys, serial
+from pylab import *
+from scipy import stats
+import pylab
+import numpy as np
+import matplotlib.pyplot as plt
+import time
+ser = serial.Serial('/dev/ttyACM0', 9600)
+z = 0
+y = array([])
+plt.ion()
+plt.show()
+while z == 0:
+	w = ser.readline()	
+	if w.strip() != '9999':
+		w = w.strip()
+		w = float(w)		
+		y = append(y,w)
+		s = y.size
+		# SCALE THE X AXIS 		
+		x = np.array(range(0, s*10, 10))
+		plt.xlabel('Time (SEC.)')
+		plt.ylabel('Current (A)')
+		plot(x, y, 'bo')
+		plt.draw()
+	elif w.strip() == '9999':
+		# PLOTTING LINE OF BEST FIT	
+		slope, intercept, r_value, p_value, slope_std_error = stats.linregress(x,y)		
+		predict_y = intercept + slope * x
+		pred_error = y - predict_y
+		degrees_of_freedom = len(x) -2
+		residual_std_error = np.sqrt(np.sum(pred_error**2)) / degrees_of_freedom
+		plt.xlabel('Time (Min.)')
+		plt.ylabel('Current (A)')
+		plot(x, y, 'bo')
+		plot(x, predict_y, 'k-')
+		savefig('/DATA/PLOT.jpeg')
+		plt.draw()
+		np.savetxt('/DATA/POINTS', y, fmt = "%3f", newline='\n')
+		f = open ('/DATA/LINREG', 'w')
+		# CONVERT VALUES INTO STRINGS
+		slope = ("%2f" % slope)
+		intercept = ("%2f" % intercept)
+		slp = str(slope)
+		intcpt = str(intercept)
+		# WRITES ALL DATA TO TXT FOR FUTURE REFERENCE
+		f.write('LINREG\n')
+		f.write('\n')
+		f.write('SLOPE\n')
+		f.write(slp)
+		f.write('\n')
+		f.write('\n')
+		f.write('INTERCEPT\n')
+		f.write(intcpt)
+		f.write('\n')
+		f.write('\n')
+		f.write('EQUATION\n')
+		f.write('CURRENT = ')
+		f.write(slp)
+		f.write('TIME + ')
+		f.write(intcpt)
+		f.close()
+		time.sleep(5)
+		# lets take a break now		
+		break
+print 'TO VIEW DATA: /PATH/TO/Zunge/'
+print 'Thank you for using the Zunge!'
