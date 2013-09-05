@@ -9,6 +9,8 @@ SETUP/TROUBLESHOOTING ZUNGE
 - To get started please vist http://www.scipy.org/install.html and follow the 
   intsructions
 
+- Also install http://pyserial.sourceforge.net/
+
 - If an error appears & the software fails to connect to the Arduino change
   '/dev/ttyACM0' in line 9 of the CURRENTSENSOR file to read '/dev/ttyACM1'
 
